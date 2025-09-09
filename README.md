@@ -1,4 +1,8 @@
+# Infinitek Automation Project
+
 ![Infinitek logo](/tools/logo/Infinitek_FullLogo_Vector.svg#gh-light-mode-only)![Infinitek logo](/tools/logo/Infinitek_FullLogo_Vector_White.svg#gh-dark-mode-only)
+
+**Enhanced Infinitek firmware with comprehensive fixes and improvements for automation projects.**
 
 Alternative firmware for [ESP8266](https://en.wikipedia.org/wiki/ESP8266) and [ESP32](https://en.wikipedia.org/wiki/ESP32) based devices with **easy configuration using webUI, OTA updates, automation using timers or rules, expandability and entirely local control over MQTT, HTTP, Serial or KNX**.
 _Written for PlatformIO._
@@ -8,6 +12,27 @@ _Written for PlatformIO._
 [![License](https://img.shields.io/github/license/arendst/Infinitek.svg)](LICENSE.txt)
 [![Discord](https://img.shields.io/discord/479389167382691863.svg?logo=discord&logoColor=white&color=5865F2&label=Discord)](https://discord.gg/Ks2Kzd4)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/arendst/Infinitek)
+
+<hr></hr>
+
+## 🚀 Project Improvements
+
+This repository contains the **Infinitek project with comprehensive fixes and enhancements**:
+
+### ✅ **Fixed Issues:**
+- **Deprecated Features**: Fixed deprecated Berry animate framework usage
+- **Security**: Removed default MQTT credentials for better security
+- **Configuration**: Created missing configuration files for build system
+- **Code Quality**: Implemented TODO comments and fixed bugs
+- **Documentation**: Enhanced comments and warnings
+- **Build System**: Resolved all configuration and dependency issues
+
+### 🔧 **Key Enhancements:**
+- Fixed PHP logical operator bug in upload scripts
+- Consolidated duplicate MQTT/Matter conflict warnings
+- Implemented sensor data publishing functionality
+- Updated version information placeholders
+- Enhanced error handling and logging
 
 <hr></hr>
 
@@ -38,7 +63,7 @@ Firmware binaries can be downloaded from http://ota.Infinitek.com/Infinitek/rele
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed change information.
 
-Unless your Infinitek powered device exhibits a problem or lacks a feature that you need, leave your device alone - it works so don’t make unnecessary changes! If the release version (i.e., the master branch) exhibits unexpected behaviour for your device and configuration, you should upgrade to the latest development version instead to see if your problem is resolved as some bugs in previous releases or development builds may already have been resolved.
+Unless your Infinitek powered device exhibits a problem or lacks a feature that you need, leave your device alone - it works so don't make unnecessary changes! If the release version (i.e., the master branch) exhibits unexpected behaviour for your device and configuration, you should upgrade to the latest development version instead to see if your problem is resolved as some bugs in previous releases or development builds may already have been resolved.
 
 Every commit made to the development branch, which is compiling successfully, will post new binary files at http://ota.Infinitek.com/Infinitek/ (this web address can be used for OTA updates too). It is important to note that these binaries are based on the current development codebase. These commits are tested as much as is possible and are typically quite stable. However, it is infeasible to test on the hundreds of different types of devices with all the available configuration options permitted.
 
