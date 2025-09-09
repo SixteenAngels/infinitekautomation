@@ -1,0 +1,18 @@
+{
+    "name": "InfinitekLED",
+    "version": "0.1",
+    "keywords": [
+      "ws2816", "sk6812", "leds"
+    ],
+    "description": "Lightweight implementation for adressable leds.",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/arendst/Infinitek/lib/lib_basic/InfinitekLED"
+    },
+    "frameworks": "arduino",
+    "libCompatMode": "strict",
+    "platforms": [
+      "espressif32"
+    ]
+}

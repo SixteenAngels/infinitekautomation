@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Infinitek Docs
+    url: https://Infinitek.github.io/docs
+    about: All the information related to Infinitek.
+  - name: Infinitek Discussions and Support
+    url: https://github.com/arendst/Infinitek/discussions
+    about: Infinitek usage Questions, Feature Requests and Projects.
+  - name: Infinitek Users Chat
+    url: https://discord.gg/Ks2Kzd4
+    about: Chat for feedback, questions and troubleshooting.

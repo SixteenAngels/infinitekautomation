@@ -1,0 +1,14 @@
+{
+    "name": "InfinitekLList",
+    "version": "1.0",
+    "description": "Simple yet powerful linked-list",
+    "license": "MIT",
+    "homepage": "https://github.com/arendst/Infinitek",
+    "frameworks": "arduino",
+    "platforms": "espressif32, espressif8266",
+    "authors":
+    {
+      "name": "Stephan Hadinger",
+      "maintainer": true
+    }
+  }

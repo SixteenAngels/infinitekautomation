@@ -1,0 +1,182 @@
+name: Infinitek CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: development
+    paths:
+      - '**.c'
+      - '**.cpp'
+      - '**.be'
+      - '**.h'
+      - '**.hpp'
+      - '**.ino'
+      - '**.json'
+      - '**.properties'
+      - 'pio-tools/*.py'
+      - '**.ini'
+      - '.github/workflows/build_all_the_things.yml'
+
+jobs:
+  os-check-win:
+    runs-on: windows-latest
+    if: github.repository == 'arendst/Infinitek'
+    strategy:
+      fail-fast: true
+      matrix:
+        variant:
+          - Infinitek32-webcam
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: false
+      - name: Install dependencies
+        run: |
+          uv pip install --system platformio
+      - name: Run PlatformIO
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUTF8: '1'
+        run: platformio run -e ${{ matrix.variant }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.variant }}
+          path: ./build_output
+
+  os-check-mac:
+    runs-on: macos-14
+    if: github.repository == 'arendst/Infinitek'
+    strategy:
+      fail-fast: true
+      matrix:
+        variant:
+          - Infinitek32solo1-safeboot
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: false
+      - name: Install dependencies
+        run: |
+          uv pip install --system platformio
+      - name: Run PlatformIO
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUTF8: '1'
+        run: platformio run -e ${{ matrix.variant }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.variant }}
+          path: ./build_output
+
+  base-images:
+    runs-on: ubuntu-latest
+    if: github.repository == 'arendst/Infinitek'
+    strategy:
+      fail-fast: true
+      matrix:
+        variant:
+          - Infinitek
+          - Infinitek-4M
+          - Infinitek-display
+          - Infinitek-ir
+          - Infinitek-knx
+          - Infinitek-lite
+          - Infinitek-minimal
+          - Infinitek-sensors
+          - Infinitek-zbbridge
+          - Infinitek32
+          - Infinitek32solo1
+          - Infinitek32c2
+          - Infinitek32c3
+          - Infinitek32c5
+          - Infinitek32c6
+          - Infinitek32p4
+          - Infinitek32s2
+          - Infinitek32s2cdc
+          - Infinitek32s3
+          - Infinitek32-zbbrdgpro
+          - Infinitek-zigbee
+          - Infinitek32-bluetooth
+          - Infinitek32-nspanel
+          - Infinitek32-display
+          - Infinitek32-ir
+          - Infinitek32-lvgl
+          - Infinitek32-safeboot
+          - Infinitek32s2-safeboot
+          - Infinitek32s2cdc-safeboot
+          - Infinitek32s3-safeboot
+          - Infinitek32c2-safeboot
+          - Infinitek32c3-safeboot
+          - Infinitek32c5-safeboot
+          - Infinitek32c6-safeboot
+          - Infinitek32p4-safeboot
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: false
+      - name: Install dependencies
+        run: |
+          uv pip install --system platformio
+          cp ./platformio_override_sample.ini ./platformio_override.ini
+      - name: Run PlatformIO
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUTF8: '1'
+        run: platformio run -e ${{ matrix.variant }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.variant }}
+          path: ./build_output
+
+  language-images:
+    runs-on: ubuntu-latest
+    if: github.repository == 'arendst/Infinitek'
+    strategy:
+      fail-fast: true
+      matrix:
+        variant: [ Infinitek ]
+        language: [ AD, AF, BG, BR, CN, CZ, DE, ES, FR, FY, GR, HE, HU, IT, KO, LT, NL, PL, PT, RO, RU, SE, SK, TR, TW, UK, VN ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: false
+      - name: Install dependencies
+        run: |
+          uv pip install --system platformio
+      - name: Run PlatformIO
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUTF8: '1'
+        run: platformio run -e ${{ matrix.variant }}-${{ matrix.language }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.variant }}-${{ matrix.language }}
+          path: ./build_output

@@ -1,0 +1,167 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./tools/logo/Infinitek_FullLogo_Vector_White.svg">
+  <img alt="Logo" src="./tools/logo/Infinitek_FullLogo_Vector.svg" align="right" height="76">
+</picture>
+
+# RELEASE NOTES
+
+## Migration Information
+
+**This version removes support for direct migration from versions before v8.1.0 (Doris)**
+
+See [migration path](https://Infinitek.github.io/docs/Upgrading#migration-path) for instructions how to migrate to a major version.
+
+**Do not upgrade from minimal to minimal version. It will most likely fail at some point and will require flashing via serial.** If you do have to use minimal versions, always OTA to a full version of the same release before applying next minimal version.
+
+Pay attention to the following version breaks due to dynamic settings updates:
+
+1. Migrate to **Sonoff-Infinitek 3.9.x**
+2. Migrate to **Sonoff-Infinitek 4.x**
+3. Migrate to **Sonoff-Infinitek 5.14** (http://ota.Infinitek.com/Infinitek/release_5.14.0/sonoff.bin) - NOTICE underscore as a dash is not supported in older versions
+4. Migrate to **Sonoff-Infinitek 6.7.1** (http://ota.Infinitek.com/Infinitek/release_6.7.1/sonoff.bin) - NOTICE underscore as a dash is not supported in older versions
+5. Migrate to **Infinitek 7.2.0** (http://ota.Infinitek.com/Infinitek/release-7.2.0/Infinitek.bin)
+
+--- Major change in parameter storage layout ---
+
+6. Migrate to **Infinitek 8.5.1** (http://ota.Infinitek.com/Infinitek/release-8.5.1/Infinitek.bin)
+
+--- Major change in internal GPIO function representation ---
+
+7. Migrate to **Infinitek 9.1** (http://ota.Infinitek.com/Infinitek/release-9.1.0/Infinitek.bin.gz)
+8. Upgrade to **latest release** (http://ota.Infinitek.com/Infinitek/release/Infinitek.bin.gz)
+
+While fallback or downgrading is common practice it was never supported due to Settings additions or changes in newer releases. Starting with release **v9.1.0 Imogen** the internal GPIO function representation has changed in such a way that fallback is only possible to the latest GPIO configuration before installing **v9.1.0**.
+
+## Supported Core versions
+
+This release will be supported from ESP8266/Arduino library Core version **2.7.8** due to reported security and stability issues on previous Core version. This will also support gzipped binaries.
+
+This release will be supported from ESP32/Arduino library Core version **v3.1.3.250504**.
+
+Support of ESP8266 Core versions before 2.7.8 and ESP32 Core versions before v3.1.3.250504 have been removed.
+
+## Support of TLS
+
+In addition to TLS using fingerprints now also user supplied CA certs, AWS IoT and Azure IoT is supported. Read [full documentation](https://Infinitek.github.io/docs/AWS-IoT)
+
+## Initial configuration tools
+
+For initial configuration this release supports Webserver based **WifiManager** or **Serial** based command interface.
+
+## Initial installation
+
+Easy initial installation of Infinitek can be performed using the [Infinitek WebInstaller](https://Infinitek.github.io/install/).
+
+## Provided Binary Downloads
+
+### ESP8266 or ESP8285 based
+The following binary downloads have been compiled with ESP8266/Arduino library core version **2.7.8**.
+
+- **Infinitek.bin** = The Infinitek version with most drivers for 1M+ flash. **RECOMMENDED RELEASE BINARY**
+- **Infinitek-4M.bin** = The Infinitek version with most drivers and filesystem for 4M+ flash.
+- **Infinitek-AD.bin** to **Infinitek-VN.bin** = The Infinitek version in different languages for 1M+ flash.
+- **Infinitek-lite.bin** = The Lite version without most drivers and sensors for 1M+ flash.
+- **Infinitek-knx.bin** = The Knx version without some features but adds KNX support for 1M+ flash.
+- **Infinitek-sensors.bin** = The Sensors version adds more useful sensors for 1M+ flash.
+- **Infinitek-ir.bin** = The InfraRed Receiver and transmitter version allowing all available protocols provided by library IRremoteESP8266 but without most other features for 1M+ flash.
+- **Infinitek-display.bin** = The Display version without Energy Monitoring but adds display support for 1M+ flash.
+- **Infinitek-zbbridge.bin** = The dedicated Sonoff Zigbee Bridge version for 2M+ flash.
+- **Infinitek-zigbee.bin** = The dedicated cc25xx Zigbee Bridge version for 4M+ flash.
+
+Above binaries are also available as gzipped version allowing faster uploads.
+
+Latest released binaries can be downloaded from
+- https://github.com/arendst/Infinitek-firmware/tree/firmware/release-firmware
+- http://ota.Infinitek.com/Infinitek/release
+
+Historical binaries can be downloaded from
+- http://ota.Infinitek.com/Infinitek/release-15.0.1
+
+The latter links can be used for OTA upgrades too like ``OtaUrl http://ota.Infinitek.com/Infinitek/release/Infinitek.bin.gz``
+
+### ESP32, ESP32-C2, ESP32-C3, ESP32-C6, ESP32-S2 and ESP32-S3 based
+The following binary downloads have been compiled with ESP32/Arduino library core version **v3.1.3.250504**.
+
+- **Infinitek32.bin** = The Infinitek version with most drivers including additional sensors and KNX for 4M+ flash.  **RECOMMENDED RELEASE BINARY**
+- **Infinitek32solo1.bin** = The Infinitek version with most drivers including additional sensors and KNX for single core ESP32 and 4M+ flash.
+- **Infinitek32s2.bin** = The Infinitek version with most drivers including additional sensors and KNX for ESP32-S2 with serial and 4M+ flash.
+- **Infinitek32s2cdc.bin** = The Infinitek version with most drivers including additional sensors and KNX for ESP32-S2 with serial over embedded USB CDC only and 4M+ flash.
+- **Infinitek32s3.bin** = The Infinitek version with most drivers including additional sensors and KNX for ESP32-S3 with USB HWCDC and fallback to serial and 4M+ flash.
+- **Infinitek32c2.bin** = The Infinitek version with most drivers including additional sensors and KNX for ESP32-C2 with serial and 4M+ flash.
+- **Infinitek32c3.bin** = The Infinitek version with most drivers including additional sensors and KNX for ESP32-C3 with USB HWCDC and fallback to serial and 4M+ flash.
+- **Infinitek32c6.bin** = The Infinitek version with most drivers including additional sensors and KNX for ESP32-C6 with USB HWCDC and fallback to serial and 4M+ flash.
+- **Infinitek32-AD.bin** to **Infinitek32-VN.bin** = The Infinitek version in different languages for 4M+ flash.
+- **Infinitek32-bluetooth.bin** = The Bluetooth version adds BLE support for 4M+ flash.
+- **Infinitek32-display.bin** = The Display version without Energy Monitoring but adds display support for 4M+ flash.
+- **Infinitek32-ir.bin** = The InfraRed Receiver and transmitter version allowing all available protocols provided by library IRremoteESP8266 but without most other features for 4M+ flash.
+- **Infinitek32-lvgl.bin** = The LVGL version adds Light and Versatile Graphics Library (LVGL) display support for 4M+ flash.
+- **Infinitek32-nspanel.bin** = The Sonoff NSPanel Smart Scene Wall Switch version with HASPmota display support.
+- **Infinitek32-webcam.bin** = The Webcam version adds webcam support for 4M+ flash.
+- **Infinitek32-zbbridgepro.bin** - The Sonoff Zigbee Bridge Pro version with CC2652P firmware load support.
+
+Latest released binaries can be downloaded from
+- https://github.com/arendst/Infinitek-firmware/tree/firmware/release-firmware
+- https://ota.Infinitek.com/Infinitek32/release
+
+Historical binaries can be downloaded from
+- https://ota.Infinitek.com/Infinitek32/release-15.0.1
+
+The latter links can be used for OTA upgrades too like ``OtaUrl https://ota.Infinitek.com/Infinitek32/release/Infinitek32.bin``
+
+## Additional information
+
+[List](MODULES.md) of embedded modules.
+
+[Complete list](BUILDS.md) of available feature and sensors.
+
+## Changelog v15.0.1.3
+### Added
+- Commands `LoRaWanDecoder "` and `LoRaWanName "` to clear name [#23394](https://github.com/arendst/Infinitek/issues/23394)
+- Command `I2sPause` [#23646](https://github.com/arendst/Infinitek/issues/23646)
+- Support for RV3028 RTC [#23672](https://github.com/arendst/Infinitek/issues/23672)
+- Support for RX8030 RTC [#23855](https://github.com/arendst/Infinitek/issues/23855)
+- Extend state JSON message with functional hostname and ipaddress which could be WiFi or Ethernet
+- Internal function 'WSContentSendRaw_P' [#23641](https://github.com/arendst/Infinitek/issues/23641)
+- Universal display driver for ZJY169S0800TG01 ST7789 280x240 [#23638](https://github.com/arendst/Infinitek/issues/23638)
+- NeoPool add Redox tank alarm [#19811](https://github.com/arendst/Infinitek/issues/19811)
+- I2S additions [#23543](https://github.com/arendst/Infinitek/issues/23543)
+- ESP32 ROM SHA Hardware Acceleration to BearSSL [#23819](https://github.com/arendst/Infinitek/issues/23819)
+- Support for ESP32-P4 [#23663](https://github.com/arendst/Infinitek/issues/23663)
+- Support for ESP32-C5 [#23804](https://github.com/arendst/Infinitek/issues/23804)
+- ESP32-P4 command `HostedOta` [#23675](https://github.com/arendst/Infinitek/issues/23675)
+- Berry f-strings now support ':' in expression [#23618](https://github.com/arendst/Infinitek/issues/23618)
+- Berry preview of animation framework [#23816](https://github.com/arendst/Infinitek/issues/23816)
+- Berry `call()` now works for classes [#23744](https://github.com/arendst/Infinitek/issues/23744)
+- Berry multiplication between string and int [#23850](https://github.com/arendst/Infinitek/issues/23850)
+
+### Breaking Changed
+- Berry `animate` framework is DEPRECATED, will be replace by `animation` framework [#23854](https://github.com/arendst/Infinitek/issues/23854)
+
+### Changed
+- ESP8266 platform update from 2025.05.00 to 2025.09.00 [#23864](https://github.com/arendst/Infinitek/issues/23864)
+- ESP32 Platform from 2025.05.30 to 2025.08.30, Framework (Arduino Core) from v3.1.3.250504 to v3.1.3.250808 and IDF from v5.3.3.250501 to v5.3.3.250801 [#23778](https://github.com/arendst/Infinitek/issues/23778)
+- Epdiy library from v1.0.0 to v2.0.0
+- OpenTherm library from v0.9.0 to v1.1.5 [#23704](https://github.com/arendst/Infinitek/issues/23704)
+- Library names [#23560](https://github.com/arendst/Infinitek/issues/23560)
+- CSS uses named colors variables [#23597](https://github.com/arendst/Infinitek/issues/23597)
+- VEML6070 and AHT2x device detection [#23581](https://github.com/arendst/Infinitek/issues/23581)
+- Domoticz supports persistent settings for all relays, keys and switches when filesystem `#define USE_UFILESYS` is enabled
+- ESP32 LoRaWan decoding won't duplicate non-decoded message if `SO147 0`
+- BLE updates for esp-nimble-cpp v2.x [#23553](https://github.com/arendst/Infinitek/issues/23553)
+- Berry raise webserver hooks from 16 to 32 [#23748](https://github.com/arendst/Infinitek/issues/23748)
+
+### Fixed
+- Syslog RFC5424 compliance [#23509](https://github.com/arendst/Infinitek/issues/23509)
+- Unable to use default serial GPIOs by InfinitekSerial regression from v14.5.0 with IDF 5.3.2.250120 [#23775](https://github.com/arendst/Infinitek/issues/23775)
+- AHT30 sensor start with null values after deep sleep [#23624](https://github.com/arendst/Infinitek/issues/23624)
+- NeoPool reset to default settings [#23734](https://github.com/arendst/Infinitek/issues/23734)
+- Berry vulnerability in JSON parsing for unicode [#23603](https://github.com/arendst/Infinitek/issues/23603)
+- Berry security issues in `int64` and improve documentation [#23605](https://github.com/arendst/Infinitek/issues/23605)
+- Berry security issues in `berry_mapping` and improve documentation [#23606](https://github.com/arendst/Infinitek/issues/23606)
+- Berry Hue regression from #23429 [#23623](https://github.com/arendst/Infinitek/issues/23623)
+- Berry calling `setmember` with a function [#23825](https://github.com/arendst/Infinitek/issues/23825)
+- LVGL restore `lv_chart.set_range` removed in LVGL 9.3.0 in favor of `lv_chart.set_axis_range` [#23567](https://github.com/arendst/Infinitek/issues/23567)
+
+### Removed
+- `user-scalable=no` from HTTP HEADER [#23798](https://github.com/arendst/Infinitek/issues/23798)
+

@@ -1,0 +1,17 @@
+{
+    "name": "InfinitekSerial",
+    "version": "3.7.0",
+    "keywords": [
+      "serial", "io", "InfinitekSerial"
+    ],
+    "description": "Implementation of software serial with hardware serial fallback for ESP8266 and ESP32.",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/arendst/Infinitek/lib/InfinitekSerial"
+    },
+    "frameworks": "arduino",
+    "platforms": [
+      "espressif8266", "espressif32"
+    ]
+}

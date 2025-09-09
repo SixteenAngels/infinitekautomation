@@ -1,0 +1,269 @@
+name: Build_firmware_master
+
+on:
+  workflow_dispatch:      # Start a workflow
+  push:
+    branches: master
+    paths-ignore:
+    - '.github/**'        # Ignore changes towards the .github directory
+    - '**.md'             # Do no build if *.md files changes
+    - 'Infinitek/berry/**'  # Ignore Berry examples
+
+# Ensures that only one deploy task per branch/environment will run at a time.
+concurrency:
+  group: environment-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  safeboot-images:
+    runs-on: ubuntu-latest
+    if: github.repository == 'arendst/Infinitek'
+    continue-on-error: true
+    strategy:
+      matrix:
+        variant:
+          - Infinitek32-safeboot
+          - Infinitek32solo1-safeboot
+          - Infinitek32s2-safeboot
+          - Infinitek32s2cdc-safeboot
+          - Infinitek32s3-safeboot
+          - Infinitek32s3ser-safeboot
+          - Infinitek32c2-safeboot
+          - Infinitek32c3-safeboot
+          - Infinitek32c3ser-safeboot
+          - Infinitek32c5-safeboot
+          - Infinitek32c5ser-safeboot
+          - Infinitek32c6-safeboot
+          - Infinitek32c6ser-safeboot
+          - Infinitek32p4-safeboot
+          - Infinitek32p4ser-safeboot
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: false
+      - name: Install dependencies
+        run: |
+          uv pip install --system platformio
+          cp ./platformio_override_sample.ini ./platformio_override.ini
+      - name: Add "release" to footer
+        run: |
+          sed -i -e "s/Infinitek_SHA_SHORT/Infinitek_SHA_SHORT release-/g" ./Infinitek/include/Infinitek_version.h
+      - name: Run PlatformIO
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUTF8: '1'
+        run: platformio run -e ${{ matrix.variant }}
+      - name: Upload safeboot firmware artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.variant }}
+          path: ./build_output
+
+  base-images:
+    runs-on: ubuntu-latest
+    if: github.repository == 'arendst/Infinitek'
+    continue-on-error: true
+    strategy:
+      matrix:
+        variant:
+          - Infinitek
+          - Infinitek-4M
+          - Infinitek-minimal
+          - Infinitek-display
+          - Infinitek-ir
+          - Infinitek-knx
+          - Infinitek-lite
+          - Infinitek-sensors
+          - Infinitek-zbbridge
+          - Infinitek-zigbee
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: false
+      - name: Install dependencies
+        run: |
+          uv pip install --system platformio
+          cp ./platformio_override_sample.ini ./platformio_override.ini
+      - name: Add "release" to footer
+        run: |
+          sed -i -e "s/Infinitek_SHA_SHORT/Infinitek_SHA_SHORT release-/g" ./Infinitek/include/Infinitek_version.h
+      - name: Run PlatformIO
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUTF8: '1'
+        run: platformio run -e ${{ matrix.variant }}
+      - name: Upload firmware artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.variant }}
+          path: ./build_output
+
+  base32-images:
+    needs: safeboot-images
+    runs-on: ubuntu-latest
+    if: github.repository == 'arendst/Infinitek'
+    continue-on-error: true
+    strategy:
+      matrix:
+        variant:
+          - Infinitek32
+          - Infinitek32-zbbrdgpro
+          - Infinitek32-webcam
+          - Infinitek32-bluetooth
+          - Infinitek32-nspanel
+          - Infinitek32-display
+          - Infinitek32-ir
+          - Infinitek32-lvgl
+          - Infinitek32c2
+          - Infinitek32c3
+          - Infinitek32c5
+          - Infinitek32c6
+          - Infinitek32p4
+          - Infinitek32s2
+          - Infinitek32s2cdc
+          - Infinitek32s3
+          - Infinitek32solo1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: false
+      - name: Install dependencies
+        run: |
+          uv pip install --system platformio
+          cp ./platformio_override_sample.ini ./platformio_override.ini
+      - name: Download safeboot firmwares
+        uses: actions/download-artifact@v4
+        with:
+          pattern: Infinitek32*
+          path: ./temp
+      - name: Move safeboot files
+        run: |
+          mkdir -p ./firmware/firmware
+          find ./temp -type f -exec cp -t ./firmware/firmware {} +
+      - name: Add "release" to footer
+        run: |
+          sed -i -e "s/Infinitek_SHA_SHORT/Infinitek_SHA_SHORT release-/g" ./Infinitek/include/Infinitek_version.h
+      - name: Run PlatformIO
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUTF8: '1'
+        run: platformio run -e ${{ matrix.variant }}
+      - name: Upload firmware artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.variant }}
+          path: ./build_output
+
+  language-images:
+    needs: safeboot-images
+    runs-on: ubuntu-latest
+    if: github.repository == 'arendst/Infinitek'
+    continue-on-error: true
+    strategy:
+      matrix:
+        variant: [ Infinitek, Infinitek32 ]
+        language: [ AD, AF, BG, BR, CN, CZ, DE, ES, FR, FY, GR, HE, HU, IT, KO, LT, NL, PL, PT, RO, RU, SE, SK, TR, TW, UK, VN ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: false
+      - name: Install dependencies
+        run: |
+          uv pip install --system platformio
+          cp ./platformio_override_sample.ini ./platformio_override.ini
+      - name: Download safeboot firmwares
+        uses: actions/download-artifact@v4
+        with:
+          pattern: Infinitek32*
+          path: ./temp
+      - name: Move safeboot files
+        run: |
+          mkdir -p ./firmware/firmware
+          find ./temp -type f -exec cp -t ./firmware/firmware {} +
+      - name: Add "release" to footer
+        run: |
+          sed -i -e "s/Infinitek_SHA_SHORT/Infinitek_SHA_SHORT release-/g" ./Infinitek/include/Infinitek_version.h
+      - name: Run PlatformIO
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUTF8: '1'
+        run: platformio run -e ${{ matrix.variant }}-${{ matrix.language }}
+      - name: Upload language firmware artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.variant }}-${{ matrix.language }}
+          path: ./build_output
+
+  Release:
+    needs: [base-images, base32-images, language-images]
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+    - uses: actions/checkout@v4
+    - name: Download all Infinitek artifacts
+      uses: actions/download-artifact@v4
+      with:
+        pattern: Infinitek*
+        path: ./temp
+    - name: Move files
+      run: |
+        mkdir -p ./release
+        find ./temp -type f -exec cp -t ./release {} +
+    - name: Display structure of downloaded files
+      run: ls -R ./release/
+    - name: Release
+      uses: jason2866/action-gh-release@v1.2
+      #if: startsWith(github.ref, 'refs/tags/')
+      with:
+        tag_name: ${{ github.run_number }}
+        files: |
+          ./release/Infinitek*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  Start_final_copy:
+    needs: Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dispatch workflow in arendst/Infinitek-firmware
+      run: |
+         curl -X POST https://api.github.com/repos/arendst/Infinitek-firmware/actions/workflows/fetch_deploy.yml/dispatches \
+         -H 'Accept: application/vnd.github.everest-preview+json' \
+         -u ${{ secrets.API_TOKEN_GITHUB }} \
+         --data '{"ref": "gh_actions"}'

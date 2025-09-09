@@ -1,0 +1,44 @@
+<!-- Template: Protocol Selection Web UI -->
+<html>
+<head>
+  <title>Protocol Selection</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    .container { max-width: 400px; margin: auto; }
+    label { font-weight: bold; }
+    .protocol-option { margin: 1em 0; }
+    button { padding: 0.5em 1em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Select Protocol</h2>
+    <form id="protocolForm">
+      <div class="protocol-option">
+        <input type="radio" id="mqtt" name="protocol" value="MQTT" checked>
+        <label for="mqtt">MQTT</label>
+      </div>
+      <div class="protocol-option">
+        <input type="radio" id="matter" name="protocol" value="Matter">
+        <label for="matter">Matter</label>
+      </div>
+      <button type="submit">Save</button>
+    </form>
+    <div id="status"></div>
+  </div>
+  <script>
+    document.getElementById('protocolForm').onsubmit = function(e) {
+      e.preventDefault();
+      var selected = document.querySelector('input[name="protocol"]:checked').value;
+      // Example: send selection to device (replace with actual API call)
+      fetch('/api/set_protocol', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ protocol: selected })
+      })
+      .then(res => res.ok ? 'Protocol updated!' : 'Error updating protocol.')
+      .then(msg => document.getElementById('status').innerText = msg);
+    };
+  </script>
+</body>
+</html>
